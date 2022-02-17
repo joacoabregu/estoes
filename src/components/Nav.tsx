@@ -15,8 +15,8 @@ const styles = {
   nav: {
     display: "flex",
     padding: "1em",
-    marginBottom: "1em",
     borderBottom: "2px solid #D9D9D9",
+    backgroundColor: "#FFF",
   },
 
   img: {

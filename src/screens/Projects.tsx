@@ -20,15 +20,7 @@ import ListItemIcon from "@mui/material/ListItemIcon";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import EditIcon from "@mui/icons-material/Edit";
 
-const project = {
-  name: "Prueba",
-  description: "lorem ipsum",
-  projectManager: "Walt",
-  assigned: "Ignacio",
-  status: "enabled",
-  creationDate: "09/09/09 18:00 am",
-  image: "https://picsum.photos/200",
-};
+import {useProjectsContext} from "../context/ProjectsContext"
 
 export default function Projects() {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
@@ -43,6 +35,9 @@ export default function Projects() {
   function redirectAddProject(): void {
     navigate("/add-project");
   }
+
+  const {projects} = useProjectsContext()
+
   return (
     <Container maxWidth="md">
       <section css={styles.header}>
@@ -60,61 +55,72 @@ export default function Projects() {
       </section>
       <Paper variant="outlined">
         <main>
-          <Card>
-            <CardHeader
-              action={
-                <IconButton
-                  aria-label="settings"
-                  aria-controls={open ? "basic-menu" : undefined}
-                  aria-haspopup="true"
-                  aria-expanded={open ? "true" : undefined}
-                  onClick={handleClick}
+          {projects.map((project) => {
+            return (
+              <Card key={project.id}>
+                <CardHeader
+                  action={
+                    <IconButton
+                      aria-label="settings"
+                      aria-controls={open ? "basic-menu" : undefined}
+                      aria-haspopup="true"
+                      aria-expanded={open ? "true" : undefined}
+                      onClick={handleClick}
+                    >
+                      <MoreVertIcon />
+                    </IconButton>
+                  }
+                  title={project.name}
+                  subheader={`Creation date: ${project.creationDate}`}
+                  sx={styles.cardHeader}
+                />
+                <Menu
+                  id="long-menu"
+                  MenuListProps={{
+                    "aria-labelledby": "long-button",
+                  }}
+                  anchorEl={anchorEl}
+                  open={open}
+                  onClose={handleClose}
+                  PaperProps={{
+                    style: {
+                      maxHeight: 48 * 4.5,
+                      width: "20ch",
+                    },
+                  }}
                 >
-                  <MoreVertIcon />
-                </IconButton>
-              }
-              title={project.name}
-              subheader={`Creation date: ${project.creationDate}`}
-              sx={styles.cardHeader}
-            />
-            <Menu
-              id="long-menu"
-              MenuListProps={{
-                "aria-labelledby": "long-button",
-              }}
-              anchorEl={anchorEl}
-              open={open}
-              onClose={handleClose}
-              PaperProps={{
-                style: {
-                  maxHeight: 48 * 4.5,
-                  width: "20ch",
-                },
-              }}
-            >
-              <MenuList>
-                <MenuItem>
-                  <ListItemIcon>
-                    <EditIcon fontSize="small" />
-                  </ListItemIcon>
-                  <ListItemText>Edit</ListItemText>
-                </MenuItem>
-                <MenuItem>
-                  <ListItemIcon>
-                    <DeleteOutlineIcon fontSize="small" />
-                  </ListItemIcon>
-                  <ListItemText>Delete</ListItemText>
-                </MenuItem>
-              </MenuList>
-            </Menu>
+                  <MenuList>
+                    <MenuItem>
+                      <ListItemIcon>
+                        <EditIcon fontSize="small" />
+                      </ListItemIcon>
+                      <ListItemText>Edit</ListItemText>
+                    </MenuItem>
+                    <MenuItem>
+                      <ListItemIcon>
+                        <DeleteOutlineIcon fontSize="small" />
+                      </ListItemIcon>
+                      <ListItemText>Delete</ListItemText>
+                    </MenuItem>
+                  </MenuList>
+                </Menu>
 
-            <CardContent sx={styles.cardContent}>
-              <img src={project.image} alt="profile" css={styles.profileImg} />
-              <Typography variant="body1" sx={styles.cardContentTypography}>
-                {project.assigned}{" "}
-              </Typography>
-            </CardContent>
-          </Card>
+                <CardContent sx={styles.cardContent}>
+                  <img
+                    src={project.image}
+                    alt="profile"
+                    css={styles.profileImg}
+                  />
+                  <Typography variant="body1" sx={styles.cardContentTypography}>
+                    {project.assignedTo}{" "}
+                  </Typography>
+                </CardContent>
+              </Card>
+            );
+          })
+
+          }
+         
         </main>
       </Paper>
     </Container>

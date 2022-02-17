@@ -14,6 +14,12 @@ import ListItemText from "@mui/material/ListItemText";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import EditIcon from "@mui/icons-material/Edit";
+import Button from "@mui/material/Button";
+import Dialog from "@mui/material/Dialog";
+import DialogActions from "@mui/material/DialogActions";
+import DialogContent from "@mui/material/DialogContent";
+import DialogContentText from "@mui/material/DialogContentText";
+import DialogTitle from "@mui/material/DialogTitle";
 import { ProjectCardProps } from "../types/interfaces";
 import { useProjectsContext } from "../context/ProjectsContext";
 import { useNavigate } from "react-router-dom";
@@ -29,6 +35,21 @@ export default function ProjectCard({ project }: ProjectCardProps) {
   };
   const handleClose: () => void = () => {
     setAnchorEl(null);
+  };
+
+  const [openDialog, setOpenDialog] = React.useState(false);
+
+  const handleOpenDialog = () => {
+    setOpenDialog(true);
+  };
+
+  const handleAgreeDialogAction = () => {
+    deleteProject();
+    setOpenDialog(false);
+  };
+
+  const handleCloseDialog = () => {
+    setOpenDialog(false);
   };
 
   function deleteProject(): void {
@@ -82,7 +103,7 @@ export default function ProjectCard({ project }: ProjectCardProps) {
             </ListItemIcon>
             <ListItemText>Edit</ListItemText>
           </MenuItem>
-          <MenuItem onClick={deleteProject}>
+          <MenuItem onClick={handleOpenDialog}>
             <ListItemIcon>
               <DeleteOutlineIcon fontSize="small" />
             </ListItemIcon>
@@ -90,6 +111,25 @@ export default function ProjectCard({ project }: ProjectCardProps) {
           </MenuItem>
         </MenuList>
       </Menu>
+      <Dialog
+        open={openDialog}
+        onClose={handleCloseDialog}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle id="alert-dialog-title">{"Delete Project"}</DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-description">
+            Are you sure you want to delete this project?
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleCloseDialog}>Disagree</Button>
+          <Button onClick={handleAgreeDialogAction} autoFocus>
+            Agree
+          </Button>
+        </DialogActions>
+      </Dialog>
 
       <CardContent sx={styles.cardContent}>
         <img src={project.image} alt="profile" css={styles.profileImg} />

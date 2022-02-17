@@ -3,6 +3,8 @@ import { jsx } from "@emotion/react";
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import { useForm, Controller, SubmitHandler } from "react-hook-form";
+import { format } from "date-fns";
+
 import Container from "@mui/material/Container";
 import Paper from "@mui/material/Paper";
 import Typography from "@mui/material/Typography";
@@ -13,7 +15,9 @@ import TextField from "@mui/material/TextField";
 import InputLabel from "@mui/material/InputLabel";
 import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
-import { FormInput } from "../types/interfaces";
+import { FormInput, Project } from "../types/interfaces";
+
+import { useProjectsContext } from "../context/ProjectsContext";
 
 export default function AddProject() {
   const {
@@ -21,13 +25,23 @@ export default function AddProject() {
     handleSubmit,
     formState: { isSubmitted },
   } = useForm<FormInput>();
+  const { projects, setProjects } = useProjectsContext();
+
   const onSubmit: SubmitHandler<FormInput> = (data) => {
-    console.log(data);
+    const lastProjectId: number = projects[projects.length - 1].id;
+    const newProject: Project = {
+      ...data,
+      id: lastProjectId + 1,
+      creationDate: format(new Date(), "dd/MM/y hh:mm aaaa"),
+      image: "https://picsum.photos/200",
+    };
+    setProjects([...projects, newProject]);
   };
   let navigate = useNavigate();
   function redirectHome(): void {
     navigate("/");
   }
+
   return (
     <>
       <section css={styles.header}>
@@ -46,7 +60,7 @@ export default function AddProject() {
           <form onSubmit={handleSubmit(onSubmit)} css={styles.form}>
             <InputLabel htmlFor="name">Project name</InputLabel>
             <Controller
-              name="projectManager"
+              name="name"
               control={control}
               defaultValue=""
               rules={{ required: true }}
@@ -63,7 +77,7 @@ export default function AddProject() {
 
             <InputLabel htmlFor="description">Description</InputLabel>
             <Controller
-              name="projectManager"
+              name="description"
               control={control}
               defaultValue=""
               rules={{ required: true }}
@@ -143,7 +157,7 @@ export default function AddProject() {
                 </FormControl>
               )}
             />
-            
+
             <InputLabel id="status">Status</InputLabel>
             <Controller
               name="status"
@@ -214,7 +228,7 @@ const styles = {
     padding: "0",
   },
   form: {
-    "& :nth-child(even)": {
+    "& :nth-of-type(even)": {
       marginBottom: "0.5em",
     },
   },

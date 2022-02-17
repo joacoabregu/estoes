@@ -14,7 +14,7 @@ const project: Project = {
   name: "Prueba",
   description: "lorem ipsum",
   projectManager: "Walt",
-  assigned: "Ignacio",
+  assignedTo: "Ignacio",
   status: "enabled",
   creationDate: "09/09/09 18:00 am",
   image: "https://picsum.photos/200",

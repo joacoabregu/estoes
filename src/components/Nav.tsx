@@ -14,7 +14,9 @@ export default function Nav() {
 const styles = {
   nav: {
     display: "flex",
-    marginBottom: "3em",
+    padding: "1em",
+    marginBottom: "1em",
+    borderBottom: "2px solid #D9D9D9",
   },
 
   img: {

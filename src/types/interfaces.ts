@@ -11,7 +11,7 @@ export interface Project {
   name: string;
   description: string;
   projectManager: string;
-  assigned: string;
+  assignedTo: string;
   status: string;
   creationDate: string;
   image: string;

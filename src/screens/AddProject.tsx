@@ -26,6 +26,10 @@ export default function AddProject() {
     formState: { isSubmitted },
   } = useForm<FormInput>();
   const { projects, setProjects } = useProjectsContext();
+  let navigate = useNavigate();
+  function redirectHome(): void {
+    navigate("/");
+  }
 
   const onSubmit: SubmitHandler<FormInput> = (data) => {
     const lastProjectId: number = projects[projects.length - 1].id;
@@ -36,11 +40,8 @@ export default function AddProject() {
       image: "https://picsum.photos/200",
     };
     setProjects([...projects, newProject]);
+    redirectHome();
   };
-  let navigate = useNavigate();
-  function redirectHome(): void {
-    navigate("/");
-  }
 
   return (
     <>

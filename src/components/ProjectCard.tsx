@@ -15,8 +15,13 @@ import ListItemIcon from "@mui/material/ListItemIcon";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import EditIcon from "@mui/icons-material/Edit";
 import { ProjectCardProps } from "../types/interfaces";
+import { useProjectsContext } from "../context/ProjectsContext";
+import { useNavigate } from "react-router-dom";
 
 export default function ProjectCard({ project }: ProjectCardProps) {
+  const { projects, setProjects } = useProjectsContext();
+  let navigate = useNavigate();
+
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -25,6 +30,17 @@ export default function ProjectCard({ project }: ProjectCardProps) {
   const handleClose: () => void = () => {
     setAnchorEl(null);
   };
+
+  function deleteProject(): void {
+    const newProjects = projects.filter((element) => {
+      return element.id !== project.id;
+    });
+    setProjects(newProjects);
+  }
+
+  function redirectEdit(): void {
+    navigate(`/edit-project/${project.id}`);
+  }
 
   return (
     <Card key={project.id}>
@@ -60,13 +76,13 @@ export default function ProjectCard({ project }: ProjectCardProps) {
         }}
       >
         <MenuList>
-          <MenuItem>
+          <MenuItem onClick={redirectEdit}>
             <ListItemIcon>
               <EditIcon fontSize="small" />
             </ListItemIcon>
             <ListItemText>Edit</ListItemText>
           </MenuItem>
-          <MenuItem>
+          <MenuItem onClick={deleteProject}>
             <ListItemIcon>
               <DeleteOutlineIcon fontSize="small" />
             </ListItemIcon>

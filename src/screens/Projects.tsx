@@ -1,6 +1,7 @@
 /** @jsxImportSource @emotion/react */
 import { jsx } from "@emotion/react";
 import React from "react";
+import { useNavigate } from "react-router-dom";
 import Container from "@mui/material/Container";
 import Paper from "@mui/material/Paper";
 import Typography from "@mui/material/Typography";
@@ -35,17 +36,25 @@ export default function Projects() {
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
   };
-  const handleClose = () => {
+  const handleClose: () => void = () => {
     setAnchorEl(null);
   };
-
+  let navigate = useNavigate();
+  function redirectAddProject(): void {
+    navigate("/add-project");
+  }
   return (
     <Container maxWidth="md">
       <section css={styles.header}>
         <Typography variant="body1" sx={styles.title}>
           My projects
         </Typography>
-        <Button variant="contained" startIcon={<AddIcon />} sx={styles.button}>
+        <Button
+          variant="contained"
+          startIcon={<AddIcon />}
+          sx={styles.button}
+          onClick={redirectAddProject}
+        >
           Add project
         </Button>
       </section>

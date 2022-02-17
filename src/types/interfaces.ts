@@ -23,3 +23,7 @@ export interface ProjectsContextValue {
   projects: Projects;
   setProjects: React.Dispatch<React.SetStateAction<Projects>>;
 }
+
+export interface ProjectCardProps {
+  project: Project;
+}

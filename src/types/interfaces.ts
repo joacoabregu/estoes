@@ -20,6 +20,6 @@ export interface Project {
 export type Projects = Project[];
 
 export interface ProjectsContextValue {
-  state: Projects;
-  setState: () => {};
+  projects: Projects;
+  setProjects: React.Dispatch<React.SetStateAction<Projects>>;
 }

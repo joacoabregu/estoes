@@ -32,7 +32,7 @@ export default function ProjectForm({
     status: project?.status ?? "enabled",
   };
 
-  const buttonText = type === "add" ? "Add project" : "Edit project";
+  const buttonText = type === "add" ? "Create project" : "Save changes";
 
   return (
     <Container maxWidth="sm" sx={styles.formContainer}>

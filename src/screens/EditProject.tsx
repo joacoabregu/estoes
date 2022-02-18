@@ -2,18 +2,11 @@
 import { jsx } from "@emotion/react";
 import React from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { useForm, Controller, SubmitHandler } from "react-hook-form";
-
+import {  SubmitHandler } from "react-hook-form";
 import Container from "@mui/material/Container";
-import Paper from "@mui/material/Paper";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
-import FormControl from "@mui/material/FormControl";
-import TextField from "@mui/material/TextField";
-import InputLabel from "@mui/material/InputLabel";
-import Select from "@mui/material/Select";
-import MenuItem from "@mui/material/MenuItem";
 import CircularProgress from "@mui/material/CircularProgress";
 import { FormInput, Project } from "../types/interfaces";
 import { useProjectsContext } from "../context/ProjectsContext";

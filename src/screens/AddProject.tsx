@@ -2,29 +2,16 @@
 import { jsx } from "@emotion/react";
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import { useForm, Controller, SubmitHandler } from "react-hook-form";
+import { SubmitHandler } from "react-hook-form";
 import { format } from "date-fns";
-
-import Container from "@mui/material/Container";
-import Paper from "@mui/material/Paper";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
-import FormControl from "@mui/material/FormControl";
-import TextField from "@mui/material/TextField";
-import InputLabel from "@mui/material/InputLabel";
-import Select from "@mui/material/Select";
-import MenuItem from "@mui/material/MenuItem";
 import { FormInput, Project } from "../types/interfaces";
-
 import { useProjectsContext } from "../context/ProjectsContext";
+import Form from "../components/Form";
 
 export default function AddProject() {
-  const {
-    control,
-    handleSubmit,
-    formState: { isSubmitted },
-  } = useForm<FormInput>();
   const { projects, setProjects } = useProjectsContext();
   let navigate = useNavigate();
   function redirectHome(): void {
@@ -56,135 +43,7 @@ export default function AddProject() {
         </Button>
         <Typography sx={styles.title}>Add Project</Typography>
       </section>
-      <Container maxWidth="sm" sx={styles.formContainer}>
-        <Paper elevation={4} sx={styles.formPaper}>
-          <form onSubmit={handleSubmit(onSubmit)} css={styles.form}>
-            <InputLabel htmlFor="name">Project name</InputLabel>
-            <Controller
-              name="name"
-              control={control}
-              defaultValue=""
-              rules={{ required: true }}
-              render={({ field }) => (
-                <TextField
-                  id="name"
-                  variant="outlined"
-                  fullWidth
-                  inputProps={{ "aria-label": "Without label" }}
-                  {...field}
-                />
-              )}
-            />
-
-            <InputLabel htmlFor="description">Description</InputLabel>
-            <Controller
-              name="description"
-              control={control}
-              defaultValue=""
-              rules={{ required: true }}
-              render={({ field }) => (
-                <TextField
-                  id="description"
-                  variant="outlined"
-                  fullWidth
-                  inputProps={{ "aria-label": "Without label" }}
-                  {...field}
-                />
-              )}
-            />
-
-            <InputLabel id="manager">Project Manager</InputLabel>
-            <Controller
-              name="projectManager"
-              control={control}
-              defaultValue=""
-              rules={{ required: true }}
-              render={({ field }) => (
-                <FormControl fullWidth>
-                  <Select
-                    labelId="manager-select-label"
-                    id="manager"
-                    inputProps={{ "aria-label": "Without label" }}
-                    {...field}
-                    displayEmpty={true}
-                    renderValue={(value) =>
-                      value?.length
-                        ? Array.isArray(value)
-                          ? value.join(", ")
-                          : value
-                        : "Select a person"
-                    }
-                  >
-                    <MenuItem disabled value="">
-                      <em>Select a person</em>
-                    </MenuItem>
-                    <MenuItem value="Walt Cosani">Walt Cosani</MenuItem>
-                    <MenuItem value="Ignacio Truffa">Ignacio Truffa</MenuItem>
-                    <MenuItem value="Walter">Walter</MenuItem>
-                  </Select>
-                </FormControl>
-              )}
-            />
-
-            <InputLabel id="assignedTo">Assigned to</InputLabel>
-            <Controller
-              name="assignedTo"
-              control={control}
-              defaultValue=""
-              rules={{ required: true }}
-              render={({ field }) => (
-                <FormControl fullWidth>
-                  <Select
-                    labelId="assignedTo-select-label"
-                    id="assignedTo"
-                    inputProps={{ "aria-label": "Without label" }}
-                    {...field}
-                    displayEmpty={true}
-                    renderValue={(value) =>
-                      value?.length
-                        ? Array.isArray(value)
-                          ? value.join(", ")
-                          : value
-                        : "Select a person"
-                    }
-                  >
-                    <MenuItem disabled value="">
-                      <em>Select a person</em>
-                    </MenuItem>
-                    <MenuItem value="Walt Cosani">Walt Cosani</MenuItem>
-                    <MenuItem value="Ignacio Truffa">Ignacio Truffa</MenuItem>
-                    <MenuItem value="Walter">Walter</MenuItem>
-                  </Select>
-                </FormControl>
-              )}
-            />
-
-            <InputLabel id="status">Status</InputLabel>
-            <Controller
-              name="status"
-              control={control}
-              defaultValue="enabled"
-              rules={{ required: true }}
-              render={({ field }) => (
-                <FormControl fullWidth>
-                  <Select
-                    labelId="status-select-label"
-                    id="status"
-                    inputProps={{ "aria-label": "Without label" }}
-                    {...field}
-                  >
-                    <MenuItem value="enabled">Enabled</MenuItem>
-                    <MenuItem value="disabled">Disabled</MenuItem>
-                  </Select>
-                </FormControl>
-              )}
-            />
-            <Button variant="contained" type="submit" sx={styles.buttonSubmit}>
-              Add project
-            </Button>
-          </form>
-        </Paper>
-      </Container>
+      <Form onSubmit={onSubmit} type="add" />
     </>
   );
 }
@@ -205,13 +64,6 @@ const styles = {
     fontSize: "1.2rem",
     fontWeight: "600",
   },
-  buttonSubmit: {
-    display: "block",
-    backgroundColor: "#F5222D",
-    "&:hover,&:focus": {
-      backgroundColor: "#ef222d",
-    },
-  },
   buttonNavigate: {
     border: "none",
     color: "rgba(0, 0, 0, 0.65)",
@@ -221,19 +73,5 @@ const styles = {
       border: "none",
       backgroundColor: "#FFF",
     },
-  },
-  formPaper: {
-    padding: "2em",
-  },
-  formContainer: {
-    padding: "0",
-  },
-  form: {
-    "& :nth-of-type(even)": {
-      marginBottom: "0.5em",
-    },
-  },
-  inputLabel: {
-    marbinBottom: "0.5em",
   },
 };

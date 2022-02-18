@@ -7,7 +7,7 @@ export const FILTER = "FILTER";
 export const CURRENTPROJECTS = "CURRENTPROJECTS";
 export const PAGINATIONCOUNT = "PAGINATIONCOUNT";
 export const CURRENTPAGE = "CURRENTPAGE";
-const PROJECTS = "PROJECTS";
+export const PROJECTS = "PROJECTS";
 
 export function projectsReducer(
   state: ProjectsReducerState,

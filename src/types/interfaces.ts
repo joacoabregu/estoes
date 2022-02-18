@@ -35,3 +35,23 @@ export interface ProjectFormProps {
   project?: Project;
   type: "add" | "edit";
 }
+
+export interface ProjectsReducerState {
+  projects: Projects;
+  filteredProjects: Projects;
+  currentProjects: Projects;
+  paginationCount: number;
+  currentPage: number;
+  search: string;
+  projectsPerPage: number;
+  indexOfFirstProject: number;
+  indexOfLastProject: number;
+}
+
+export type ProjectsReducerAction =
+  | { type: "SEARCH"; payload: string }
+  | { type: "FILTER"; payload: string }
+  | { type: "CURRENTPAGE"; payload: number }
+  | { type: "CURRENTPROJECTS" }
+  | { type: "PAGINATIONCOUNT" }
+  | { type: "PROJECTS"; payload: Projects };

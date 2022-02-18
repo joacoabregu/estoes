@@ -64,7 +64,7 @@ export default function ProjectCard({ project }: ProjectCardProps) {
   }
 
   return (
-    <Card key={project.id}>
+    <Card sx={styles.card}>
       <CardHeader
         action={
           <IconButton
@@ -142,6 +142,10 @@ export default function ProjectCard({ project }: ProjectCardProps) {
 }
 
 const styles = {
+  card: {
+    borderRadius: "0",
+    borderBottom: "1px solid #E5E5E5",
+  },
   cardHeader: {
     paddingBottom: "0",
   },

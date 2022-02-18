@@ -2,28 +2,16 @@
 import { jsx } from "@emotion/react";
 import React from "react";
 import { Routes, Route } from "react-router-dom";
-
 import Nav from "./components/Nav";
 import AddProject from "./screens/AddProject";
 import Projects from "./screens/Projects";
 import EditProject from "./screens/EditProject";
-
 import { ProjectsContext } from "./context/ProjectsContext";
-import { Project, Projects as ProjectsType } from "./types/interfaces";
-
-const project: Project = {
-  id: 1,
-  name: "Prueba",
-  description: "lorem ipsum",
-  projectManager: "Walt Cosani",
-  assignedTo: "Ignacio Truffa",
-  status: "enabled",
-  creationDate: "09/09/09 18:00 am",
-  image: "https://picsum.photos/200",
-};
+import { Projects as ProjectsType } from "./types/interfaces";
+import { projectsMock } from "./assets/mockData";
 
 function App() {
-  const [projects, setProjects] = React.useState<ProjectsType>([project]);
+  const [projects, setProjects] = React.useState<ProjectsType>(projectsMock);
 
   return (
     <div css={styles.main}>

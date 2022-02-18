@@ -201,7 +201,6 @@ const styles = {
   form: {
     "& > *": {
       marginTop: "0.5em",
-      marginBottom: "0.5em",
     },
   },
   inputLabel: {

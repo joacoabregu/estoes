@@ -1,3 +1,5 @@
+import { SubmitHandler } from "react-hook-form";
+
 export interface FormInput {
   name: string;
   description: string;
@@ -12,7 +14,7 @@ export interface Project {
   description: string;
   projectManager: string;
   assignedTo: string;
-  status: string;
+  status: "enabled" | "disabled";
   creationDate: string;
   image: string;
 }
@@ -26,4 +28,10 @@ export interface ProjectsContextValue {
 
 export interface ProjectCardProps {
   project: Project;
+}
+
+export interface ProjectFormProps {
+  onSubmit: SubmitHandler<FormInput>;
+  project?: Project;
+  type: "add" | "edit";
 }

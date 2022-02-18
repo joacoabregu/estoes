@@ -15,6 +15,13 @@ import TextField from "@mui/material/TextField";
 import { useProjectsContext } from "../context/ProjectsContext";
 import { ProjectsReducerState } from "../types/interfaces";
 import { projectsReducer } from "../reducers/ProjectsReducer";
+import {
+  SEARCH,
+  CURRENTPROJECTS,
+  PAGINATIONCOUNT,
+  CURRENTPAGE,
+  PROJECTS,
+} from "../reducers/ProjectsReducer";
 
 export default function Projects() {
   const { projects } = useProjectsContext();
@@ -51,25 +58,25 @@ export default function Projects() {
     event: React.ChangeEvent<unknown>,
     value: number
   ) => {
-    dispatch({ type: "CURRENTPAGE", payload: value });
+    dispatch({ type: CURRENTPAGE, payload: value });
   };
 
   const handleSearchChange = (
     event: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>
-  ) => dispatch({ type: "SEARCH", payload: event.target.value });
+  ) => dispatch({ type: SEARCH, payload: event.target.value });
 
   React.useEffect(() => {
-    dispatch({ type: "PROJECTS", payload: projects });
-    dispatch({ type: "CURRENTPROJECTS" });
+    dispatch({ type: PROJECTS, payload: projects });
+    dispatch({ type: CURRENTPROJECTS });
   }, [projects, indexOfLastProject, indexOfFirstProject]);
 
   React.useEffect(() => {
-    dispatch({ type: "SEARCH", payload: search });
+    dispatch({ type: SEARCH, payload: search });
   }, [projects, search]);
 
   React.useEffect(() => {
-    dispatch({ type: "CURRENTPROJECTS" });
-    dispatch({ type: "PAGINATIONCOUNT" });
+    dispatch({ type: CURRENTPROJECTS });
+    dispatch({ type: PAGINATIONCOUNT });
   }, [filteredProjects, indexOfLastProject, indexOfFirstProject]);
 
   return (

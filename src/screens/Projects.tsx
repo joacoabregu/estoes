@@ -25,20 +25,18 @@ export default function Projects() {
   const [currentProjects, setCurrentProjects] = React.useState<ProjectsType>(
     []
   );
-  const [currentPage, setCurrentPage] = React.useState<number>(1);
   const projectsPerPage = 4;
+  const [paginationCount, setPaginationCount] = React.useState<number>(() =>
+    Math.ceil(projects.length / projectsPerPage)
+  );
+  const [currentPage, setCurrentPage] = React.useState<number>(1);
   const indexOfLastProject = currentPage * projectsPerPage;
   const indexOfFirstProject = indexOfLastProject - projectsPerPage;
-  const paginationCount = Math.ceil(projects.length / projectsPerPage);
 
   let navigate = useNavigate();
   function redirectAddProject(): void {
     navigate("/add-project");
   }
-
-  const handleChange = (event: React.ChangeEvent<unknown>, value: number) => {
-    setCurrentPage(value);
-  };
 
   React.useEffect(() => {
     setCurrentProjects(projects.slice(indexOfFirstProject, indexOfLastProject));
@@ -55,7 +53,12 @@ export default function Projects() {
     setCurrentProjects(
       filteredProjects.slice(indexOfFirstProject, indexOfLastProject)
     );
+    setPaginationCount(Math.ceil(filteredProjects.length / projectsPerPage));
   }, [filteredProjects, indexOfLastProject, indexOfFirstProject]);
+
+  const handleChange = (event: React.ChangeEvent<unknown>, value: number) => {
+    setCurrentPage(value);
+  };
 
   return (
     <>

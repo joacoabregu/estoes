@@ -58,61 +58,79 @@ export default function Projects() {
   }, [filteredProjects, indexOfLastProject, indexOfFirstProject]);
 
   return (
-    <Container maxWidth="md">
+    <>
       <section css={styles.header}>
-        <Typography variant="body1" sx={styles.title}>
-          My projects
-        </Typography>
-        <Button
-          variant="contained"
-          startIcon={<AddIcon />}
-          sx={styles.button}
-          onClick={redirectAddProject}
-        >
-          Add project
-        </Button>
+        <Container maxWidth="md" sx={styles.headerContainer}>
+          <Typography variant="body1" sx={styles.title}>
+            My projects
+          </Typography>
+          <Button
+            variant="contained"
+            startIcon={<AddIcon />}
+            sx={styles.button}
+            onClick={redirectAddProject}
+          >
+            Add project
+          </Button>
+        </Container>
       </section>
-      <Paper variant="outlined">
-        <main>
-          <TextField
-            id="search"
-            variant="outlined"
-            placeholder="Search..."
-            value={search}
-            onChange={(event) => setSearch(event.target.value)}
-            inputProps={{ "aria-label": "Without label" }}
-            InputProps={{
-              startAdornment: (
-                <InputAdornment position="start">
-                  <SearchIcon />
-                </InputAdornment>
-              ),
-            }}
+
+      <Container maxWidth="md" sx={styles.container}>
+        <Paper variant="outlined">
+          <main>
+            <TextField
+              id="search"
+              variant="outlined"
+              placeholder="Search..."
+              value={search}
+              sx={styles.search}
+              onChange={(event) => setSearch(event.target.value)}
+              inputProps={{ "aria-label": "Without label" }}
+              InputProps={{
+                startAdornment: (
+                  <InputAdornment position="start">
+                    <SearchIcon />
+                  </InputAdornment>
+                ),
+              }}
+            />
+            {currentProjects
+              .filter((project) => {
+                return project.name.includes(search);
+              })
+              .map((project) => {
+                return <ProjectCard key={project.id} project={project} />;
+              })}
+          </main>
+          <Pagination
+            count={paginationCount}
+            page={currentPage}
+            onChange={handleChange}
+            size="large"
+            sx={styles.pagination}
           />
-          {currentProjects
-            .filter((project) => {
-              return project.name.includes(search);
-            })
-            .map((project) => {
-              return <ProjectCard key={project.id} project={project} />;
-            })}
-        </main>
-        <Pagination
-          count={paginationCount}
-          page={currentPage}
-          onChange={handleChange}
-        />
-      </Paper>
-    </Container>
+        </Paper>
+      </Container>
+    </>
   );
 }
 
 const styles = {
+  container: {
+    padding: "0",
+  },
   header: {
     display: "flex",
     justifyContent: "space-between",
     alignItems: "center",
-    marginBottom: "2em",
+    padding: "0.5em",
+    marginBottom: "1em",
+    backgroundColor: "#FFF",
+    borderRadius: "0.25em",
+  },
+  headerContainer: {
+    display: "flex",
+    justifyContent: "space-between",
   },
   title: {
     fontSize: "1.2rem",
@@ -120,5 +138,15 @@ const styles = {
   },
   button: {
     backgroundColor: "#F5222D",
+  },
+  search: {
+    display: "flex",
+    padding: "1em 2em ",
+  },
+  pagination: {
+    padding: "1em",
+    "& > ul": {
+      justifyContent: "center",
+    },
   },
 };

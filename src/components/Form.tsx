@@ -1,7 +1,7 @@
 /** @jsxImportSource @emotion/react */
 import { jsx } from "@emotion/react";
 import React from "react";
-import { useForm, Controller, } from "react-hook-form";
+import { useForm, Controller } from "react-hook-form";
 import Container from "@mui/material/Container";
 import Paper from "@mui/material/Paper";
 import Button from "@mui/material/Button";
@@ -10,10 +10,8 @@ import TextField from "@mui/material/TextField";
 import InputLabel from "@mui/material/InputLabel";
 import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
+import Alert from "@mui/material/Alert";
 import { FormInput, ProjectFormProps } from "../types/interfaces";
-
-
-
 
 export default function ProjectForm({
   onSubmit,
@@ -23,7 +21,7 @@ export default function ProjectForm({
   const {
     control,
     handleSubmit,
-    formState: { isSubmitted },
+    formState: { errors },
   } = useForm<FormInput>();
 
   const defaultValues = {
@@ -56,6 +54,9 @@ export default function ProjectForm({
               />
             )}
           />
+          {errors.name?.type === "required" && (
+            <Alert severity="error">Project name is required</Alert>
+          )}
 
           <InputLabel htmlFor="description">Description</InputLabel>
           <Controller
@@ -73,6 +74,9 @@ export default function ProjectForm({
               />
             )}
           />
+          {errors.description?.type === "required" && (
+            <Alert severity="error">Description is required</Alert>
+          )}
 
           <InputLabel id="manager">Project Manager</InputLabel>
           <Controller
@@ -106,6 +110,9 @@ export default function ProjectForm({
               </FormControl>
             )}
           />
+          {errors.projectManager?.type === "required" && (
+            <Alert severity="error">Project manager is required</Alert>
+          )}
 
           <InputLabel id="assignedTo">Assigned to</InputLabel>
           <Controller
@@ -139,6 +146,9 @@ export default function ProjectForm({
               </FormControl>
             )}
           />
+          {errors.assignedTo?.type === "required" && (
+            <Alert severity="error">Assigned is required</Alert>
+          )}
 
           <InputLabel id="status">Status</InputLabel>
           <Controller
@@ -160,6 +170,10 @@ export default function ProjectForm({
               </FormControl>
             )}
           />
+          {errors.status?.type === "required" && (
+            <Alert severity="error">Status is required</Alert>
+          )}
+
           <Button variant="contained" type="submit" sx={styles.buttonSubmit}>
             {buttonText}
           </Button>
@@ -176,6 +190,7 @@ const styles = {
     "&:hover,&:focus": {
       backgroundColor: "#ef222d",
     },
+    marginTop: "1em",
   },
   formPaper: {
     padding: "2em",
@@ -184,7 +199,7 @@ const styles = {
     padding: "0",
   },
   form: {
-    "& :nth-of-type(even)": {
+    "& > *": {
       marginBottom: "0.5em",
     },
   },

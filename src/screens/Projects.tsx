@@ -12,53 +12,65 @@ import InputAdornment from "@mui/material/InputAdornment";
 import Pagination from "@mui/material/Pagination";
 import ProjectCard from "../components/ProjectCard";
 import TextField from "@mui/material/TextField";
-
 import { useProjectsContext } from "../context/ProjectsContext";
-import { Projects as ProjectsType } from "../types/interfaces";
+import { ProjectsReducerState } from "../types/interfaces";
+import { projectsReducer } from "../reducers/ProjectsReducer";
 
 export default function Projects() {
   const { projects } = useProjectsContext();
-  const [search, setSearch] = React.useState<string>("");
-  const [filteredProjects, setFilteredProjects] = React.useState<ProjectsType>(
-    []
-  );
-  const [currentProjects, setCurrentProjects] = React.useState<ProjectsType>(
-    []
-  );
-  const projectsPerPage = 4;
-  const [paginationCount, setPaginationCount] = React.useState<number>(() =>
-    Math.ceil(projects.length / projectsPerPage)
-  );
-  const [currentPage, setCurrentPage] = React.useState<number>(1);
-  const indexOfLastProject = currentPage * projectsPerPage;
-  const indexOfFirstProject = indexOfLastProject - projectsPerPage;
+
+  const initialState: ProjectsReducerState = {
+    projects,
+    search: "",
+    filteredProjects: [],
+    currentProjects: [],
+    projectsPerPage: 4,
+    indexOfLastProject: 1 * 4,
+    indexOfFirstProject: 4 - 4,
+    paginationCount: Math.ceil(projects.length / 4),
+    currentPage: 1,
+  };
+
+  const [state, dispatch] = React.useReducer(projectsReducer, initialState);
+  const {
+    search,
+    filteredProjects,
+    paginationCount,
+    currentProjects,
+    currentPage,
+    indexOfLastProject,
+    indexOfFirstProject,
+  } = state;
 
   let navigate = useNavigate();
   function redirectAddProject(): void {
     navigate("/add-project");
   }
 
+  const handlePaginationChange = (
+    event: React.ChangeEvent<unknown>,
+    value: number
+  ) => {
+    dispatch({ type: "CURRENTPAGE", payload: value });
+  };
+
+  const handleSearchChange = (
+    event: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>
+  ) => dispatch({ type: "SEARCH", payload: event.target.value });
+
   React.useEffect(() => {
-    setCurrentProjects(projects.slice(indexOfFirstProject, indexOfLastProject));
+    dispatch({ type: "PROJECTS", payload: projects });
+    dispatch({ type: "CURRENTPROJECTS" });
   }, [projects, indexOfLastProject, indexOfFirstProject]);
 
   React.useEffect(() => {
-    const filteredProjects = projects.filter((project) => {
-      return project.name.includes(search);
-    });
-    setFilteredProjects(filteredProjects);
+    dispatch({ type: "SEARCH", payload: search });
   }, [projects, search]);
 
   React.useEffect(() => {
-    setCurrentProjects(
-      filteredProjects.slice(indexOfFirstProject, indexOfLastProject)
-    );
-    setPaginationCount(Math.ceil(filteredProjects.length / projectsPerPage));
+    dispatch({ type: "CURRENTPROJECTS" });
+    dispatch({ type: "PAGINATIONCOUNT" });
   }, [filteredProjects, indexOfLastProject, indexOfFirstProject]);
-
-  const handleChange = (event: React.ChangeEvent<unknown>, value: number) => {
-    setCurrentPage(value);
-  };
 
   return (
     <>
@@ -87,7 +99,7 @@ export default function Projects() {
               placeholder="Search..."
               value={search}
               sx={styles.search}
-              onChange={(event) => setSearch(event.target.value)}
+              onChange={handleSearchChange}
               inputProps={{ "aria-label": "Without label" }}
               InputProps={{
                 startAdornment: (
@@ -108,7 +120,7 @@ export default function Projects() {
           <Pagination
             count={paginationCount}
             page={currentPage}
-            onChange={handleChange}
+            onChange={handlePaginationChange}
             size="large"
             sx={styles.pagination}
           />
